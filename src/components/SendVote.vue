@@ -18,6 +18,9 @@
             </div>
 
         </div>
+        <div class="mainBoxFooter">
+            <button>Envie seu voto agora</button>
+        </div>
     </div>
 </template>
 
@@ -28,28 +31,44 @@
 </script>
 
 <style scoped>
-    .participantesWrapper {
-
-    }
 .participantes {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: 10px;
+    padding: 0 15px 15px;
+    width: 520px;
 }
-    .participante {
-        width: 250px;
-    }
 
+.participante {
+    width: 250px;
+}
 
-    .participanteImage {
-        border: 1px solid #d7d7d7;
-        width: 250px;
-        height: 250px;
-        margin: 10px 0;
-    }
+.participanteImage {
+    border: 1px solid #d7d7d7;
+    width: 250px;
+    height: 250px;
+    margin: 10px 0;
+}
 
-    .participanteImage.selected {
-        border: 2px solid #f09c20;
-    }
+.participanteImage.selected {
+    border: 2px solid #f09c20;
+}
+
+.mainBoxFooter {
+    background-color: #f5f5f5;
+    border-top: 1px solid #d7d7d7;
+    width: 100%;
+    justify-content: center;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.mainBoxFooter > button{
+    background-color: #007fde;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
 
 </style>

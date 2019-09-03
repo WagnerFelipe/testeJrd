@@ -1,17 +1,14 @@
 <template>
     <div class="mainBoxContainer">
-        <div class="mainBox">
-            <div class="mainBoxContent">
+        <div class="mainBoxContent">
+            <div class="mainBoxHeaderWrapper">
                 <div class="mainBoxContentHeader">
                     <img src="./../../assets/yellowBall.png" width="36" height="35">
                     <p>QUEM DEVE SER <strong>ELIMINADO</strong>?</p>
                 </div>
                 <div class="separator"></div>
-                <slot></slot>
             </div>
-            <div class="mainBoxFooter">
-                <button>Envie seu voto agora</button>
-            </div>
+            <slot></slot>
         </div>
 
         <div class="closeBtn">
@@ -28,23 +25,23 @@
 </script>
 
 <style scoped>
+
 .mainBoxContainer {
     position: relative;
 }
 
-.mainBox {
-    width: 600px;
-    height: 600px;
+.mainBoxContent {
+    max-width: 700px;
+    min-height: 400px;
     border: 2px solid #d7d7d7;
     position: relative;
     border-radius: 5px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
-.mainBox:after {
+.mainBoxContent:after {
     content: '';
     position: absolute;
     top: -6px;
@@ -80,38 +77,26 @@
     border-radius: 50%;
 }
 
-    .mainBoxContent {
-        padding: 15px;
-    }
+.mainBoxHeaderWrapper {
+    padding: 15px;
+}
 
-    .mainBoxContentHeader {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.mainBoxContentHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainBoxContentHeader p {
+    margin-left: 10px;
+}
 
 .separator {
     background-image: url("./../../assets/headerBorderDetail.png");
     width: 100%;
     height: 9px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
-    .mainBoxFooter {
-        background-color: #f5f5f5;
-        border-top: 1px solid #d7d7d7;
-        width: 100%;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 
-.mainBoxFooter > button{
-    background-color: #007fde;
-    color: #ffffff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-}
 </style>
