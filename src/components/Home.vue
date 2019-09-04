@@ -1,22 +1,23 @@
 <template>
   <div class="hello">
     <MainBox>
-      <ViewResult></ViewResult>
+      <SendVote />
+      <ViewResult />
     </MainBox>
   </div>
 </template>
 
 <script>
-import SendVote from "./SendVote";
-import MainBox from "./common/MainBox";
-import ViewResult from "./ViewResult";
+import SendVote from "./SendVote"
+import MainBox from "./common/MainBox"
+// import ViewResult from "./ViewResult"
 
 export default {
   name: 'Home',
   components: {
     SendVote,
     MainBox,
-    ViewResult
+    // ViewResult
   }
 }
 </script>

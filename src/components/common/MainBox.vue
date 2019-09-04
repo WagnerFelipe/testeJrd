@@ -89,14 +89,13 @@
 
 .mainBoxContentHeader p {
     margin-left: 10px;
+    font-size: 1.4rem;
+    color: #545454;
 }
 
 .separator {
     background-image: url("./../../assets/headerBorderDetail.png");
     width: 100%;
     height: 9px;
-    margin-top: 10px;
 }
-
-
 </style>

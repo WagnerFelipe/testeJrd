@@ -41,7 +41,7 @@
 
     .sendVoteContent {
         position: relative;
-        width: 520px;
+        width: 620px;
     }
 
     .sendVoteContainer {

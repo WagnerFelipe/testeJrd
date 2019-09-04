@@ -1,32 +1,62 @@
 <template>
-    <div class="participantesWrapper">
+    <div class="participantesWrapper">        
         <div class="participantes">
-            <div class="participante">
-                <span>Participante 1</span>
-                <div class="participanteImage">
-                    <img src="./../assets/participante1.png">
+            <div class="participante" 
+                v-for="(emparedado, i) in paredao.emparedados" :key="emparedado._id" 
+                @click="selecionar(i)">
+                <span class="nome">
+                    {{emparedado.nome}}
+                </span>
+                <div class="participanteImage" v-bind:class="{ 'selected': emparedado.selecionado }">
+                    <img :src="imagens[i]">
                 </div>
-                <span>Para eliminar o <strong>Participante 1</strong> pelo telefone disque <strong>0800-123-0001</strong> ou manda um SMS para <strong>8001</strong></span>
+                <span class="instrucoes">Para eliminar o <strong>Participante {{i + 1}}</strong> pelo telefone disque <strong>0800-123-000{{i + 1}}</strong> ou manda um SMS para <strong>800{{i + 1}}</strong></span>
             </div>
-
-            <div class="participante">
-                <span>Participante 2</span>
-                <div class="participanteImage selected">
-                    <img src="./../assets/participante2.png">
-                </div>
-                <span>Para eliminar o <strong>Participante 2</strong> pelo telefone disque <strong>0800-123-0002</strong> ou manda um SMS para <strong>8002</strong></span>
-            </div>
-
         </div>
-        <div class="mainBoxFooter">
+
+        <div class="mainBoxFooter" @click="enviarVoto">
             <button>Envie seu voto agora</button>
         </div>
     </div>
 </template>
 
 <script>
+    import ParedaoService from './../http/ParedaoService'
+
     export default {
-        name: "SendVote"
+        name: "SendVote",
+        data () {
+            return {
+                paredao: {},
+                imagens: [
+                    require('./../assets/participante1.png'),
+                    require('./../assets/participante2.png')
+                ]
+            }
+        },
+        async created () {
+            const paredoes = await ParedaoService.obterTodos()
+            this.paredao = paredoes.data[0] // Pega o primeiro paredão apenas para exemplo
+        },
+        methods: {
+            selecionar (i) {
+                let emparedados = this.paredao.emparedados.map(e => {
+                    e.selecionado = false
+                    return e
+                })
+                emparedados[i].selecionado = true
+                this.paredao.emparedados = emparedados
+            },
+            async enviarVoto () {
+                const participanteSelecionado = this.paredao.emparedados.find(e => e.selecionado)
+
+                const voto = await ParedaoService
+                    .votar({ 
+                        paredaoId: this.paredao._id, 
+                        participanteId: participanteSelecionado.participanteId.toString()
+                    })
+            }
+        }
     }
 </script>
 
@@ -36,22 +66,52 @@
     justify-content: space-between;
     margin-top: 10px;
     padding: 0 15px 15px;
-    width: 520px;
+    width: 580px;
 }
 
 .participante {
-    width: 250px;
+    width: 280px; 
+    cursor: pointer;   
+}
+
+.participante > span.nome {
+    color: #595959;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.participante > span.instrucoes {
+    font-size: 0.7rem;
+    color: #9d9d9d;
+}
+
+.participante > span.instrucoes > strong {
+    font-weight: bold;
 }
 
 .participanteImage {
     border: 1px solid #d7d7d7;
-    width: 250px;
-    height: 250px;
+    width: 280px;
+    height: 280px;
     margin: 10px 0;
 }
 
+.participanteImage > img {
+    width: 280px;
+    height: 280px;
+}
+
 .participanteImage.selected {
-    border: 2px solid #f09c20;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 5px solid #f09c20;
+    border-radius: 3px;
+}
+
+.participanteImage.selected > img {
+    width: 270px;
+    height: 270px;
 }
 
 .mainBoxFooter {
@@ -66,9 +126,11 @@
 .mainBoxFooter > button{
     background-color: #007fde;
     color: #ffffff;
+    font-size: 0.9rem;
     border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
+    padding: 12px 30px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 </style>
