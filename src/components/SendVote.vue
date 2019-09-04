@@ -10,7 +10,7 @@
                 <div class="participanteImage" v-bind:class="{ 'selected': emparedado.selecionado }">
                     <img :src="imagens[i]">
                 </div>
-                <span class="instrucoes">Para eliminar o <strong>Participante {{i + 1}}</strong> pelo telefone disque <strong>0800-123-000{{i + 1}}</strong> ou manda um SMS para <strong>800{{i + 1}}</strong></span>
+                <span class="instrucoes">Para eliminar o <strong>{{ emparedado.nome }}</strong> pelo telefone disque <strong>0800-123-000{{i + 1}}</strong> ou manda um SMS para <strong>800{{i + 1}}</strong></span>
             </div>
         </div>
 
@@ -50,11 +50,13 @@
             async enviarVoto () {
                 const participanteSelecionado = this.paredao.emparedados.find(e => e.selecionado)
 
-                const voto = await ParedaoService
+                await ParedaoService
                     .votar({ 
                         paredaoId: this.paredao._id, 
                         participanteId: participanteSelecionado.participanteId.toString()
                     })
+
+                this.$emit('enviouVoto', this.paredao.fim, participanteSelecionado.nome)
             }
         }
     }

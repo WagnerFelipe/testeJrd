@@ -11,16 +11,25 @@
             <slot></slot>
         </div>
 
-        <div class="closeBtn">
-            X
-        </div>
+        <div v-if="btnFechar" class="closeBtn" @click="exibirVotacao">X</div>
 
     </div>
 </template>
 
 <script>
     export default {
-        name: "MainBox"
+        name: "MainBox",
+        props: {
+            btnFechar: {
+                type: Boolean,
+                default: false
+            }
+        },
+        methods: {
+            exibirVotacao () {
+                this.$emit('exibirVotacao')
+            }
+        }
     }
 </script>
 
@@ -63,6 +72,7 @@
     background-color: #ffffff;
     right: -13px;
     top: -13px;
+    cursor: pointer;
 }
 
 .closeBtn:after {

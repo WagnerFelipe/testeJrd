@@ -1,6 +1,6 @@
 <template>
     <div class="sendVoteContainer">
-        <p><strong>Parabéns!</strong> Seu voto para <strong>Participanete 1</strong> foi enviado com sucesso.</p>
+        <p><strong>Parabéns!</strong> Seu voto para <strong>{{ resultado.participante }}</strong> foi enviado com sucesso.</p>
         <div class="sendVoteContent">
             <div class="participantes">
                 <div>
@@ -18,8 +18,8 @@
                     <div class="chartText">
                         <div class="chartTextContent">
                             <p>FALTAM</p>
-                            <p class="horas">10:30:47</p>
-                            <p>PARA ENCERRAR A VOTAÇÃO</p>
+                            <p class="horas">{{ days }} dia(s) e {{ hours }}:{{ minutes }}:{{ seconds }}</p>
+                            <p class="txt-encerramento">PARA ENCERRAR A VOTAÇÃO </p>
                         </div>
                     </div>
                 </div>
@@ -30,13 +30,54 @@
 
 <script>
     export default {
-        name: "ViewResult"
+        name: "ViewResult",
+        props: {
+            resultado: {
+                type: Object
+            }
+        },
+        data () { 
+            return {
+                days: null,
+                hours: null,
+                minutes: null,
+                seconds: null,
+                isEnded: null
+            }
+        },
+        methods: {
+            updateRemaining (distance) {
+                this.days = Math.floor(distance / (1000 * 60 * 60 * 24))
+                this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+                // this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)))
+                this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+                this.seconds = Math.floor((distance % (1000 * 60)) / 1000)
+            },            
+            tick () {
+                const dtFim = new Date(this.resultado.paredaoFim)
+                const currentTime = new Date()
+                const distance = Math.max(dtFim - currentTime, 0)
+                this.updateRemaining(distance)
+                
+                if (distance === 0) {
+                    clearInterval(this.timer)
+                    this.isEnded = true
+                }
+            }
+        },
+        
+        mounted () {
+            this.tick()
+            this.timer = setInterval(this.tick.bind(this), 1000)
+        },
     }
 </script>
 
 <style scoped>
     .sendVoteContainer p {
         padding: 15px;
+        margin: auto;
+        font-size: 1.1rem;
     }
 
     .sendVoteContent {
@@ -59,11 +100,12 @@
     .chartContainer {
         position: absolute;
         bottom: 0;
-        height: 200px;
-        width: 200px;
-        left: calc(50% - 100px);
+        height: 240px;
+        width: 250px;
+        left: calc(50% - 125px);
         overflow: hidden;
-        clip-path: circle(100px at 50% 70%);
+        -webkit-clip-path: circle(120px at 50% 71%);
+        clip-path: circle(120px at 50% 71%);
     }
 
     .chart {
@@ -85,28 +127,34 @@
 
     .chartText {
         background-color: #ffffff;
-        width: 160px;
-        height: 160px;
+        width: 180px;
+        height: 180px;
         position: absolute;
-        bottom: -20px;
-        left: calc(50% - 80px);
-        border-radius: 50%;
+        bottom: -23px;
+        left: calc(50% - 90px);
+        border-radius: 50%;       
     }
 
     .chartTextContent {
         margin-top: 35px;
+        color: #9d9d9d;
     }
 
     .chartTextContent p {
         margin: 0;
         padding: 0;
         text-align: center;
-        font-size: 14px;
-     }
+        font-size: 12px;
+    }
+
+    .chartTextContent p.txt-encerramento {
+        font-size: 11px;
+    }
 
     .chartTextContent p.horas {
         color: #f09c20;
         font-size: 23px;
+        margin: 5px 0;
     }
 
 </style>
